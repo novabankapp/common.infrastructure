@@ -1,4 +1,4 @@
-module github.com/novabankapp/golang.common.infrastructure
+module github.com/novabankapp/common.infrastructure
 
 go 1.17
 
