@@ -2,10 +2,11 @@ package kafka
 
 import (
 	"context"
-	"github.com/novabankapp/golang.common.infrastructure/logger"
+	"sync"
+
+	"github.com/novabankapp/common.infrastructure/logger"
 	"github.com/segmentio/kafka-go"
 	"github.com/segmentio/kafka-go/compress"
-	"sync"
 )
 
 // MessageProcessor processor methods must implement kafka.Worker func method interface

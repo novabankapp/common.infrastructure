@@ -1,11 +1,12 @@
 package logger
 
 import (
-	"github.com/novabankapp/golang.common.infrastructure/constants"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
 	"os"
 	"time"
+
+	"github.com/novabankapp/common.infrastructure/constants"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
 type Config struct {
