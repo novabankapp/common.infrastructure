@@ -5,6 +5,7 @@ type Config struct {
 	GroupID     string      `mapstructure:"groupID"`
 	InitTopics  bool        `mapstructure:"initTopics"`
 	KafkaTopics KafkaTopics `mapstructure:"kafkaTopics"`
+	Try         string
 }
 
 // TopicConfig kafka topic config
