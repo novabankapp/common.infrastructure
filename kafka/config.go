@@ -19,6 +19,8 @@ type KafkaTopics struct {
 	UserCreated         TopicConfig `mapstructure:"userCreated"`
 	UserUpdated         TopicConfig `mapstructure:"userUpdated"`
 	UserDeleted         TopicConfig `mapstructure:"userDeleted"`
+	ContactDeleted      TopicConfig `mapstructure:"contactDeleted"`
+	ContactUpdated      TopicConfig `mapstructure:"contactUpdated"`
 	UserPasswordChanged TopicConfig `mapstructure:"userPasswordChanged"`
 	UserLocked          TopicConfig `mapstructure:"userLocked"`
 }
