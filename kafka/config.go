@@ -25,6 +25,7 @@ type KafkaTopics struct {
 	UserLocked          TopicConfig `mapstructure:"userLocked"`
 	UserLoggedIn        TopicConfig `mapstructure:"userLoggedIn"`
 
+	AccountCreated     TopicConfig `mapstructure:"accountCreated"`
 	AccountLocked      TopicConfig `mapstructure:"accountLocked"`
 	AccountDeactivated TopicConfig `mapstructure:"accountDeactivated"`
 	AccountUnlocked    TopicConfig `mapstructure:"accountUnlocked"`
