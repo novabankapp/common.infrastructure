@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"github.com/EventStore/EventStore-Client-Go/esdb"
 	"os"
 	"time"
 
@@ -41,6 +42,7 @@ type Logger interface {
 	WithName(name string)
 	KafkaProcessMessage(topic string, partition int, message string, workerID int, offset int64, time time.Time)
 	KafkaLogCommittedMessage(topic string, partition int, offset int64)
+	ProjectionEvent(projectionName string, groupName string, event *esdb.ResolvedEvent, workerID int)
 }
 
 // Application logger
@@ -202,6 +204,19 @@ func (l *appLogger) Panicf(template string, args ...interface{}) {
 // Fatal uses fmt.Sprint to construct and log a message, then calls os.Exit.
 func (l *appLogger) Fatal(args ...interface{}) {
 	l.sugarLogger.Fatal(args...)
+}
+func (l *appLogger) ProjectionEvent(projectionName string, groupName string, event *esdb.ResolvedEvent, workerID int) {
+	l.logger.Debug(
+		projectionName,
+		zap.String("GroupName", groupName),
+		zap.String("StreamID", event.OriginalEvent().StreamID),
+		zap.String("EventID", event.OriginalEvent().EventID.String()),
+		zap.String("EventType", event.OriginalEvent().EventType),
+		zap.Uint64("EventNumber", event.OriginalEvent().EventNumber),
+		zap.Time("CreatedDate", event.OriginalEvent().CreatedDate),
+		zap.String("UserMetadata", string(event.OriginalEvent().UserMetadata)),
+		zap.Int(constants.WorkerID, workerID),
+	)
 }
 
 // Fatalf uses fmt.Sprintf to log a templated message, then calls os.Exit.
