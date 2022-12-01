@@ -221,6 +221,7 @@ func (l *appLogger) ProjectionEvent(projectionName string, groupName string, eve
 
 // Fatalf uses fmt.Sprintf to log a templated message, then calls os.Exit.
 func (l *appLogger) Fatalf(template string, args ...interface{}) {
+	
 	l.sugarLogger.Fatalf(template, args...)
 }
 

@@ -7,10 +7,10 @@ import (
 func NewUniversalRedisClient(cfg *Config) redis.UniversalClient {
 
 	universalClient := redis.NewUniversalClient(&redis.UniversalOptions{
-		Addrs:           []string{cfg.Addr},
-		Password:        cfg.Password, // no password set
-		DB:              cfg.DB,       // use default DB
-		MaxRetries:      maxRetries,
+		Addrs:    []string{cfg.Addr},
+		Password: cfg.Password, // no password set
+		DB:       cfg.DB,       // use default DB
+		/*MaxRetries:      maxRetries,
 		MinRetryBackoff: minRetryBackoff,
 		MaxRetryBackoff: maxRetryBackoff,
 		DialTimeout:     dialTimeout,
@@ -19,7 +19,7 @@ func NewUniversalRedisClient(cfg *Config) redis.UniversalClient {
 		PoolSize:        cfg.PoolSize,
 		MinIdleConns:    minIdleConns,
 		PoolTimeout:     poolTimeout,
-		IdleTimeout:     idleTimeout,
+		IdleTimeout:     idleTimeout,*/
 	})
 
 	return universalClient

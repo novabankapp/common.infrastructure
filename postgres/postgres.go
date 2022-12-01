@@ -41,14 +41,11 @@ func CloseDBConnection(conn *gorm.DB) error {
 	defer sqlDB.Close()
 	return nil
 }
-func AutoMigrateDB(config Config, dst ...interface{}) error {
+func AutoMigrateDB(conn *gorm.DB, dst ...interface{}) error {
 	// Auto migrate database
-	db, connErr := NewPostgresConn(config)
-	if connErr != nil {
-		return connErr
-	}
+
 	// Add new models here
-	err := db.AutoMigrate(&dst)
+	err := conn.AutoMigrate(dst)
 	return err
 }
 
