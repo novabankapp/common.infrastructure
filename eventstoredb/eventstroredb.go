@@ -1,4 +1,4 @@
-package eventstroredb
+package eventstoredb
 
 import (
 	"github.com/EventStore/EventStore-Client-Go/esdb"

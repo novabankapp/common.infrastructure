@@ -1,4 +1,4 @@
-package eventstroredb
+package eventstoredb
 
 type EventStoreConfig struct {
 	ConnectionString string `mapstructure:"connectionString"`
