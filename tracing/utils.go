@@ -6,9 +6,47 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/opentracing/opentracing-go"
 	"github.com/opentracing/opentracing-go/ext"
+	"github.com/segmentio/kafka-go"
 	"google.golang.org/grpc/metadata"
 )
 
+func StartKafkaConsumerTracerSpan(ctx context.Context, headers []kafka.Header, operationName string) (context.Context, opentracing.Span) {
+	carrierFromKafkaHeaders := TextMapCarrierFromKafkaMessageHeaders(headers)
+
+	spanCtx, err := opentracing.GlobalTracer().Extract(opentracing.TextMap, carrierFromKafkaHeaders)
+	if err != nil {
+		serverSpan := opentracing.GlobalTracer().StartSpan(operationName)
+		ctx = opentracing.ContextWithSpan(ctx, serverSpan)
+		return ctx, serverSpan
+	}
+
+	serverSpan := opentracing.GlobalTracer().StartSpan(operationName, ext.RPCServerOption(spanCtx))
+	ctx = opentracing.ContextWithSpan(ctx, serverSpan)
+
+	return ctx, serverSpan
+}
+func TextMapCarrierFromKafkaMessageHeaders(headers []kafka.Header) opentracing.TextMapCarrier {
+	textMap := make(map[string]string, len(headers))
+	for _, header := range headers {
+		textMap[header.Key] = string(header.Value)
+	}
+	return opentracing.TextMapCarrier(textMap)
+}
+func TextMapCarrierToKafkaMessageHeaders(textMap opentracing.TextMapCarrier) []kafka.Header {
+	headers := make([]kafka.Header, 0, len(textMap))
+
+	if err := textMap.ForeachKey(func(key, val string) error {
+		headers = append(headers, kafka.Header{
+			Key:   key,
+			Value: []byte(val),
+		})
+		return nil
+	}); err != nil {
+		return headers
+	}
+
+	return headers
+}
 func StartHttpServerTracerSpan(c *gin.Context, operationName string) (context.Context, opentracing.Span) {
 	spanCtx, err := opentracing.GlobalTracer().Extract(opentracing.HTTPHeaders, opentracing.HTTPHeadersCarrier(c.Request.Header))
 	if err != nil {
